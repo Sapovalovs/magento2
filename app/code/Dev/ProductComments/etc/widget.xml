@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Widget:etc/widget.xsd">
-    <widget class="Dev\ProductComments\Block\Widget\ProductList" id="dev_customwidget_productlist">
+    <widget class="Dev\ProductComments\Block\Widget\ProductList" id="dev_productcomments_productlist">
         <label>Dev Product list</label>
         <description> Description</description>
         <parameters>
@@ -16,11 +16,7 @@
                 <depends>
                     <parameter name="show_pager" value="1" />
                 </depends>
-                <value>5</value>
-            </parameter>
-            <parameter name="products_count" xsi:type="text" required="true" visible="true">
-                <label translate="true">Number of Products to Display</label>
-                <value>10</value>
+                <value>4</value>
             </parameter>
             <parameter name="template" xsi:type="select" required="true" visible="true">
                 <label translate="true">Template</label>
@@ -28,11 +24,10 @@
                     <option name="default" value="Magento_CatalogWidget::product/widget/content/grid.phtml" selected="true">
                         <label translate="true">Products Grid Template</label>
                     </option>
+                    <option name="custom" value="Dev_ProductComments::widget/productlist.phtml" selected="true">
+                        <label translate="true">Custom Template</label>
+                    </option>
                 </options>
-            </parameter>
-            <parameter name="cache_lifetime" xsi:type="text" visible="true">
-                <label translate="true">Cache Lifetime (Seconds)</label>
-                <description translate="true">86400 by default, if not set. To refresh instantly, clear the Blocks HTML Output cache.</description>
             </parameter>
             <parameter name="condition" xsi:type="conditions" visible="true" required="true" sort_order="10"
                        class="Magento\CatalogWidget\Block\Product\Widget\Conditions">
