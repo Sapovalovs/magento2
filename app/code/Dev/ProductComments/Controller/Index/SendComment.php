@@ -1,16 +1,13 @@
 <?php
-
 namespace Dev\ProductComments\Controller\Index;
 
 use Dev\ProductComments\Model\Comment;
 use Dev\ProductComments\Model\ResourceModel\Comment as ResourceComment;
-use Exception;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Message\ManagerInterface;
-use Zend_Validate;
-use Zend_Validate_Exception;
+use Magento\Framework\Event\ObserverInterface;
 
 class SendComment extends Action
 {
@@ -38,50 +35,38 @@ class SendComment extends Action
         $this->commentModel = $commentModel;
         $this->resourceModel = $resourceModel;
     }
-
     public function execute()
     {
         $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
-        $name = $this->getRequest()->getParam('name');
         $email = $this->getRequest()->getParam('email');
         $comment = $this->getRequest()->getParam('comment');
-        $productId = $this->getRequest()->getParam('productId');
-
+        $productId =$this->getRequest()->getParam('productId');
         try {
-            if (!Zend_Validate::is($name, 'NotEmpty')) {
-                $this->messageManager->addErrorMessage('Name can not be Empty');
+            if (!\Zend_Validate::is($comment, 'NotEmpty')) {
+                $this->messageManager->addErrorMessage('Comment must not be empty');
                 $resultRedirect->setUrl($this->_redirect->getRefererUrl());
                 return $resultRedirect;
-            }
-
-            if (!Zend_Validate::is($comment, 'NotEmpty')) {
-                $this->messageManager->addErrorMessage('Comment can not be Empty');
-                $resultRedirect->setUrl($this->_redirect->getRefererUrl());
-                return $resultRedirect;
-            } elseif (!Zend_Validate::is($email, 'EmailAddress')) {
+            } elseif (!\Zend_Validate::is($email, 'EmailAddress')) {
                 $this->messageManager->addErrorMessage('Email address not valid');
                 $resultRedirect->setUrl($this->_redirect->getRefererUrl());
                 return $resultRedirect;
             } else {
                 $this->commentModel
-                    ->setData('name', $name)
                     ->setData('email', $email)
                     ->setData('comment', $comment)
                     ->setData('status', 'not approved')
                     ->setData('product_id', $productId);
-
                 try {
                     $this->resourceModel->save($this->commentModel);
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                 }
-                $this->messageManager
-                    ->addSuccessMessage(
-                        'Comment request has been sent. Wait for admin approval'
-                    );
+                $this->messageManager->addSuccessMessage('Comment request has been sent. Wait for admin approve');
+                $this->_eventManager->dispatch('comment_has_sent', ['sentEmail'=>$email,'sentComment'=>$comment]);
+
                 $resultRedirect->setUrl($this->_redirect->getRefererUrl());
                 return $resultRedirect;
             }
-        } catch (Zend_Validate_Exception $e) {
+        } catch (\Zend_Validate_Exception $e) {
         }
         exit;
     }
