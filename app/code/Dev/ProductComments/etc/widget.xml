@@ -1,33 +1,14 @@
 <?xml version="1.0" ?>
-<widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Widget:etc/widget.xsd">
-    <widget class="Dev\ProductComments\Block\Widget\ProductList" id="dev_productcomments_productlist">
-        <label>Dev Product list</label>
-        <description> Description</description>
+<widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:helloworld:Magento_Widget:etc/widget.xsd">
+    <widget class="Dev\ProductComments\Block\Widget\Comments" id="dev_productcomment">
+        <label>Comments allowed</label>
+        <description>Comments</description>
         <parameters>
-            <parameter name="title" xsi:type="text" required="false" visible="true">
-                <label translate="true">Title</label>
+            <parameter name="posts" sort_order="10" visible="true" xsi:type="text">
+                <label>Widget title</label>
             </parameter>
-            <parameter name="show_pager" xsi:type="select" visible="true"
-                       source_model="Magento\Config\Model\Config\Source\Yesno">
-                <label translate="true">Display Page Control</label>
-            </parameter>
-            <parameter name="products_per_page" xsi:type="text" required="true" visible="true">
-                <label translate="true">Number of Products per Page</label>
-                <depends>
-                    <parameter name="show_pager" value="1" />
-                </depends>
-                <value>4</value>
-            </parameter>
-            <parameter name="template" xsi:type="select" required="true" visible="true">
-                <label translate="true">Template</label>
-                <options>
-                    <option name="default" value="Magento_CatalogWidget::product/widget/content/grid.phtml" selected="true">
-                        <label translate="true">Products Grid Template</label>
-                    </option>
-                    <option name="custom" value="Dev_ProductComments::widget/product-list.phtml" selected="true">
-                        <label translate="true">Custom Template</label>
-                    </option>
-                </options>
+            <parameter xsi:type='text' name="product_number_limiter" visible="true" sort_order="10">
+                <label translate="true">Set maximum number of products</label>
             </parameter>
         </parameters>
     </widget>

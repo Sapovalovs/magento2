@@ -1,6 +1,4 @@
-<?php
-
-use Magento\Framework\Component\ComponentRegistrar;
+<?php use Magento\Framework\Component\ComponentRegistrar;
 
 ComponentRegistrar::register(
     ComponentRegistrar::MODULE,

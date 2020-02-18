@@ -4,7 +4,7 @@ namespace Dev\ProductComments\Model\Attribute\Source;
 
 use Magento\Eav\Model\Entity\Attribute\Source\AbstractSource;
 
-class ProductComments extends AbstractSource
+class Comment extends AbstractSource
 {
     /**
      * Get all options

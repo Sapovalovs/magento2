@@ -1,0 +1,63 @@
+<?php
+/**
+ * @var $block Comments
+ */
+
+use Dev\ProductComments\Block\Widget\Comments;
+
+?>
+<?php if($block->getData('comments')) ?>
+    <h2 class='posts'><?php echo $block->getData('comments'); ?></h2>
+    <div class="products wrapper grid products-grid">
+        <ol class="products list items product-items">
+            <?php
+            $collection = $block->getProductCollection($block->getData('product_number_limiter'));
+            foreach ($collection as $value):
+            ?>
+            <li class="item product product-item">
+                <div class="product-item-info" data-container="product-grid">
+                    <a href="<?php echo $value->getUrlInStore()?>" class="product photo product-item-photo" tabindex="-1">
+                    <span class="product-image-container"
+                          style="width:240px;">
+                        <span class="product-image-wrapper"
+                              style="padding-bottom: 125%;">
+                            <img class="product-image-photo"
+                                 src="<?php echo $imgUrl = $this->getItemImage($value); ?>"
+                                 width="135"
+                                 height="135"
+                                 alt="<?php echo $value->getName() ?>"/>
+                        </span>
+                    </span>
+                    </a>
+                    <div class="product details product-item-details">
+                        <strong class="product name product-item-name">
+                            <a class="product-item-link" href="<?php echo $value->getUrlInStore()?>">
+                                <?php echo $value->getName() ?>
+                            </a>
+                        </strong>
+                        <div class="price-box price-final_price" data-role="priceBox" data-product-id="3">
+                        <span class="price-container price-final_price tax weee">
+                            <span id="" data-price-amount="<?php echo $value->getPrice() ?>"
+                                  data-price-type="finalPrice"
+                                  class="price-wrapper ">
+                                <span class="price">
+                                    <?php
+                                    $price = $value->getPrice();
+                                    $priceFormat = number_format($price, 2, '.', '');
+                                    echo $block->getCurrencySymbol().$priceFormat;
+                                    ?>
+                                </span>
+                            </span>
+                        </span>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <?php endforeach; ?>
+        </ol>
+
+    </div>
+
+
+
+

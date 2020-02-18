@@ -1,8 +1,6 @@
 <?php
-
 namespace Dev\ProductComments\Setup;
 
-use Dev\ProductComments\Model\Attribute\Source\ProductComments;
 use Magento\Framework\Setup\InstallDataInterface;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
@@ -17,7 +15,6 @@ class InstallData implements InstallDataInterface
      * @var EavSetupFactory
      */
     private $eavSetupFactory;
-
     /**
      * Init
      * @param EavSetupFactory $eavSetupFactory
@@ -26,7 +23,6 @@ class InstallData implements InstallDataInterface
     {
         $this->eavSetupFactory = $eavSetupFactory;
     }
-
     /**
      * {@inheritdoc}
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
@@ -35,21 +31,26 @@ class InstallData implements InstallDataInterface
      */
     public function install(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
     {
-        $eavSetup = $this->eavSetupFactory->create();
+        $eavSetup = $this->eavSetupFactory->create(['setup' => $setup]);
         $eavSetup->addAttribute(
             \Magento\Catalog\Model\Product::ENTITY,
             'product_comments',
             [
                 'group' => 'General',
-                'type' => 'int',
-                'label' => 'Allow Comments',
+                'type' => 'varchar',
+                'label' => 'Product Comment',
                 'input' => 'select',
-                'source' => ProductComments::class,
-                'global' => \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_GLOBAL,
+                'source' => \Dev\ProductComments\Model\Attribute\Source\Comment::class,
+                'frontend' => \Dev\ProductComments\Model\Attribute\Frontend\Comment::class,
                 'required' => true,
-                'visible_on_front' => false,
-                'is_filterable' => true
-
+                'sort_order' => 50,
+                'global' => \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_STORE,
+                'is_used_in_grid' => false,
+                'is_visible_in_grid' => false,
+                'is_filterable_in_grid' => false,
+                'visible' => true,
+                'is_html_allowed_on_front' => true,
+                'visible_on_front' => false
             ]
         );
     }

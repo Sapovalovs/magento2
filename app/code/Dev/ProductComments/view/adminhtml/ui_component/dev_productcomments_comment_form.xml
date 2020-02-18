@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">dev_productcomments_comment_form.comment_form_data_source</item>
+        </item>
+        <item name="label" xsi:type="string" translate="true">Sample Form</item>
+        <item name="template" xsi:type="string">templates/form/collapsible</item>
+    </argument>
+    <settings>
+        <buttons>
+            <button name="back" class="Dev\ProductComments\Block\Adminhtml\Comment\Add\BackButton"/>
+            <button name="delete" class="Dev\ProductComments\Block\Adminhtml\Comment\Add\DeleteButton"/>
+            <button name="reset" class="Dev\ProductComments\Block\Adminhtml\Comment\Add\ResetButton"/>
+            <button name="save" class="Dev\ProductComments\Block\Adminhtml\Comment\Add\SaveButton"/>
+            <button name="save_and_continue" class="Dev\ProductComments\Block\Adminhtml\Comment\Add\SaveAndContinueButton"/>
+        </buttons>
+        <namespace>dev_productcomments_comment_form</namespace>
+        <dataScope>data</dataScope>
+        <deps>
+            <dep>dev_productcomments_comment_form.comment_form_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="comment_form_data_source">
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">Dev\ProductComments\Model\Comment\DataProvider</argument>
+            <argument name="name" xsi:type="string">comment_form_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">comment_id</argument>
+            <argument name="requestFieldName" xsi:type="string">comment_id</argument>
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="submit_url" xsi:type="url" path="*/*/saveComment"/>
+                </item>
+            </argument>
+        </argument>
+    </dataSource>
+    <fieldset name="comments">
+        <settings>
+            <label/>
+        </settings>
+        <field name="ids">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">Comment</item>
+                </item>
+            </argument>
+        </field>
+        <field name="name">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string">Name</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">Comment</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <imports>
+                    <link name="disabled">${ $.provider}:data.do_we_hide_it</link>
+                </imports>
+            </settings>
+        </field>
+        <field name="email">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string">Email</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">Comment</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                    <rule name="validate-email" xsi:type="boolean">true</rule>
+                </validation>
+                <imports>
+                    <link name="disabled">${ $.provider}:data.do_we_hide_it</link>
+                </imports>
+            </settings>
+        </field>
+        <field name="comment">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string">Comment</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">Comment</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+        </field>
+        <field name="product_id">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Dev\ProductComments\Ui\Component\Listing\Column\ProductList</item>
+                <item name="config" xsi:type="array">
+                    <item name="required" xsi:type="boolean">true</item>
+                    <item name="dataType" xsi:type="string">string</item>
+                    <item name="label" translate="true" xsi:type="string">Product</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="source" xsi:type="string">flip</item>
+                    <item name="sortOrder" xsi:type="number">20</item>
+                    <item name="dataScope" xsi:type="string">product_id</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <field name="status">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="array">
+                    <item name="not_approved" xsi:type="array">
+                        <item name="value" xsi:type="string">not approved</item>
+                        <item name="label" xsi:type="string" translate="true">not approved</item>
+                    </item>
+                    <item name="approved" xsi:type="array">
+                        <item name="value" xsi:type="string">approved</item>
+                        <item name="label" xsi:type="string" translate="true">approved</item>
+                    </item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Status</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="dataType" xsi:type="string">number</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="source" xsi:type="string">job</item>
+                    <item name="dataScope" xsi:type="string">status</item>
+                    <item name="sortOrder" xsi:type="number">60</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+        </field>
+    </fieldset>
+</form>
